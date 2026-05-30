@@ -16,9 +16,14 @@ function App() {
   }, [])
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h1>Transcendence</h1>
-      <p>Backend status: <strong>{status}</strong></p>
+    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center">
+      <h1 className="text-5xl font-bold mb-4">Transcendence</h1>
+      <p className="text-lg">
+        Backend status:{' '}
+        <span className="font-mono bg-gray-800 px-3 py-1 rounded">
+          {status}
+        </span>
+      </p>
     </div>
   )
 }

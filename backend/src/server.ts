@@ -7,7 +7,7 @@ const fastify = Fastify({
 
 const start = async () => {
   await fastify.register(cors, {
-    origin: 'http://localhost:5173',
+    origin: '/api/health',
   });
 
   fastify.get('/api/health', async () => {

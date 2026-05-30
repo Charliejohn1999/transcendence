@@ -1,30 +1,25 @@
-import { useEffect, useState } from 'react'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import Home from './pages/Home'
+import Privacy from './pages/Privacy'
+import Terms from './pages/Terms'
 
 function App() {
-  const [status, setStatus] = useState<string>('Loading...')
-
-  useEffect(() => {
-    fetch('http://localhost:3000/api/health')
-      .then((res) => res.json())
-      .then((data) => {
-        setStatus(data.ok ? 'OK' : 'KO')
-      })
-      .catch((err) => {
-        console.error(err)
-        setStatus('Erreur de connexion au backend')
-      })
-  }, [])
-
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center">
-      <h1 className="text-5xl font-bold mb-4">Transcendence</h1>
-      <p className="text-lg">
-        Backend status:{' '}
-        <span className="font-mono bg-gray-800 px-3 py-1 rounded">
-          {status}
-        </span>
-      </p>
-    </div>
+    <BrowserRouter>
+      <div className="min-h-screen bg-gray-900 text-white flex flex-col">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+        </Routes>
+
+        <footer className="border-t border-gray-700 py-4 text-center text-sm text-gray-400">
+          <Link to="/" className="hover:text-white mx-3">Home</Link>
+          <Link to="/privacy" className="hover:text-white mx-3">Privacy Policy</Link>
+          <Link to="/terms" className="hover:text-white mx-3">Terms of Service</Link>
+        </footer>
+      </div>
+    </BrowserRouter>
   )
 }
 

@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.env
+*.db
+nginx/certs/
+.DS_Store

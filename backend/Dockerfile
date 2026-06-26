@@ -2,18 +2,17 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copier package.json et package-lock.json en premier
-# (pour profiter du cache Docker si les dépendances ne changent pas)
 COPY package*.json ./
 
-# Installer les dépendances
-RUN npm install
+RUN npm ci
 
-# Copier le reste du code source
-COPY . .
+COPY prisma ./prisma
 
-# Exposer le port sur lequel Fastify écoute
+RUN npx prisma generate
+
+COPY tsconfig.json ./
+COPY src ./src
+
 EXPOSE 3000
 
-# Lancer le serveur
 CMD ["npm", "run", "start"]

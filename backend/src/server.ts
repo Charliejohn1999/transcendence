@@ -14,11 +14,19 @@ const start = async () => {
   await prisma.$connect();
 
   await fastify.register(cors, {
-    origin: '/api/health',
+    origin: 'http://localhost:5173',
   });
 
   fastify.get('/api/health', async () => {
     return { ok: true };
+  });
+
+  fastify.post('/api/register', async (request, reply) => {
+    console.log('Données reçues :', request.body);
+
+    return reply.code(201).send({
+      message: 'Utilisateur reçu',
+    });
   });
 
   try {

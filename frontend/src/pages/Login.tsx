@@ -1,76 +1,60 @@
+import {useState} from "react";
 import type { FormEvent } from "react";
-import { useState } from "react";
 
-function Register() {
+function login(){
     const [message, setMessage] = useState("");
-    async function handlesubmit(event: FormEvent<HTMLFormElement>){
+    async function handleLogin(event: FormEvent<HTMLFormElement>){
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        const username = formData.get("username");
         const email = formData.get("email");
         const password = formData.get("password");
-
+        const userData = {
+            email,
+            password,
+        };
         if (
-            typeof username !== "string" ||
             typeof email !== "string" ||
             typeof password !== "string"
-        )
-        {
+        ){
             setMessage("données invalides");
             return;
         }
-        if (!username || !email || !password){
-            alert("tous les champs sont obligatoires");
+        if (!email || ! password){
+            setMessage("Tous les champs sont obligatoires");
             return;
         }
         if (password.length < 8){
-            setMessage("mot de passe trop court");
+            setMessage("le mot de passe est trop court");
             return;
         }
-
-        const userData = {
-            username,
-            email,
-            password
-        }
         console.log(userData);
-
         try {
-            const response = await fetch("/api/register", {
+            const response = await fetch("/api/login", {
                 method: "POST",
                 headers: {
                     "content-type": "application/json",
                 },
                 body: JSON.stringify(userData),
-
             });
-        
+
             const data = await response.json();
             if(!response.ok){
-                setMessage(data.message || "Impossible de créer le compte");
+                setMessage(data.message || "Impossible de se connecter, email ou mot de passe incorrect")
                 return;
             }
             setMessage(data.message);
         } catch (error) {
             console.error(error);
-            setMessage("impossible de contacter le serveur");
+            setMessage("Impossible de contacter le serveur");
         }
     }
-  return (
+
+    return (
     <main className="min-h-screen bg-gray-400 text-white flex items-center justify-center">
       <div className="w-full max-w-md">
-        <h1 className="text-3xl font-bold mb-6">Créer un compte</h1>
+        <h1 className="text-3xl font-bold mb-6">Se connecter</h1>
 
-        <form onSubmit={handlesubmit} className="flex flex-col gap-4">
-          <label htmlFor="username">Nom d'utilisateur</label>
-          <input
-            id="username"
-            type="text"
-            name="username"
-            placeholder="Votre nom d'utilisateur"
-            className="p-3 rounded text-black"
-          />
-
+        <form onSubmit={handleLogin} className="flex flex-col gap-4">
           <label htmlFor="email">Adresse e-mail</label>
           <input
             id="email"
@@ -93,7 +77,7 @@ function Register() {
             type="submit"
             className="bg-blue-600 p-3 rounded mt-4"
           >
-            Créer mon compte
+            Se connecter
           </button>
           {message && <p>{message}</p>}
         </form>
@@ -102,4 +86,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default login;
